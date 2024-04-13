@@ -1,6 +1,7 @@
 from datetime import date
 import requests
 from time import sleep
+import json
 
 class Today:
     def __init__(self):
@@ -42,6 +43,12 @@ class Bot:
     def __init__(self):
         self.today = Today()
 
+    #calls the correct squence of methods then returns dictionary 
+    def lazyGet(self, dinningHall):
+        data = self.filterParsedMenu(self.parseMenuWholeWeek(self.get_api(dinningHall, 'lunch')))
+        return data[self.today.TODAY]
+
+
     #prob useless function but making just in case for now
     def updateToday(self):
         self.today = Today()
@@ -56,11 +63,12 @@ class Bot:
     
 
     #parses raw api data to only include catagories and a list of food that they contain
-    def parseMenu(self, data):
+    def parseMenuWholeWeek(self, data):
         days = {}
         for day in data["days"]: #day is a dictionary object
+            catagoryDic = {}
+
             if len(day["menu_info"]) != 0:
-                catagoryDic = {}
 
                 #groups all foods under the appropriate section name
                 #i.e rice undre lemongrass
@@ -85,7 +93,7 @@ class Bot:
     
     #takes in the return data of parseMenu()
     #would be more algorithmicly efficient if integrate with parseMenu function but dont care rn
-    def filterMenu(self, data: dict):
+    def filterParsedMenu(self, data: dict):
         filteredDic = {}
         for key, value in data.items(): #key = date, value = {catagory : foodList}
             tempValueDic = {}
@@ -105,10 +113,10 @@ class Bot:
 def testing():
     bot = Bot()
     data = bot.get_api(DINNING_HALLS["BOLTON"], 'lunch')
-    data = bot.parseMenu(data)
+    data = bot.parseMenuWholeWeek(data)
     print(data[bot.today.TODAY])
     print("\n\n\n\n\n\n\n\n\n")
-    print(bot.filterMenu(data))
+    print(bot.filterParsedMenu(data))
 
 
 
