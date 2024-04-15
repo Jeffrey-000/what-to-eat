@@ -23,12 +23,14 @@ WHITE_LIST_CATAGORIES = ['Classic Cuisine',
                        "Chef's Choice", 
                        'Deliciously Southern', 
                        'Dessert Specials',
-                       "O'hacienda",
                        'Snelling Selects',
                        'The Bowl Specials',
+                       'Desserts At Baxter St. Bakery',
                        "Headliners"]
 
-WHITE_LIST_FOODS = []
+WHITE_LIST_FOODS = ['Blueberries',
+                    'Blackberries',
+                    ]
 
 
 DINNING_HALLS = {"BOLTON" : "dining-hall-1",
@@ -84,6 +86,7 @@ class Bot:
 
                         #dictionary keys (catagory_id) are strings. to be evaluated all other values must be casted to string
                         #menu_id and caragory_id refer to the same data
+                        #each food item is linked under a catagory_id
                         if str(menu_item["menu_id"]) == catagory_id: 
                             foodUnderThisCatagoryList.append(menu_item["food"]["name"])
                     catagoryDic[catagoryName] = foodUnderThisCatagoryList
@@ -93,13 +96,20 @@ class Bot:
     
     #takes in the return data of parseMenu()
     #would be more algorithmicly efficient if integrate with parseMenu function but dont care rn
+    #4 nests for loops is very ugly BUT it works
     def filterParsedMenu(self, data: dict):
         filteredDic = {}
         for key, value in data.items(): #key = date, value = {catagory : foodList}
             tempValueDic = {}
             for catagory, foodlist in value.items():
                 if catagory in WHITE_LIST_CATAGORIES:
-                    tempValueDic[catagory] = foodlist
+                    tempList = []
+                    for foodItem in foodlist:
+                        for whiteItem in WHITE_LIST_FOODS:
+                            if whiteItem in foodItem:
+                                foodItem = '**' + foodItem + '**'
+                        tempList.append(foodItem)
+                    tempValueDic[catagory] = tempList
 
             filteredDic[key] = tempValueDic
 
@@ -112,7 +122,7 @@ class Bot:
         
 def testing():
     bot = Bot()
-    data = bot.get_api(DINNING_HALLS["BOLTON"], 'lunch')
+    data = bot.get_api(DINNING_HALLS["OHOUSE"], 'lunch')
     data = bot.parseMenuWholeWeek(data)
     print(data[bot.today.TODAY])
     print("\n\n\n\n\n\n\n\n\n")

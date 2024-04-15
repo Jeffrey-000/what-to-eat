@@ -21,7 +21,9 @@ async def on_ready():
         if str(channel).upper() in scrapper.DINNING_HALLS:
             await channel.purge()
             for key, value in food.lazyGet(scrapper.DINNING_HALLS[str(channel).upper()]).items():
-                await channel.send("**" + str(key)  + "**" + "\n" +str(value) + "\n.")
+                await channel.send("**" + str(key)  + "**" + "\n" + str(value) + "\n.")
+
+    await bot.close()
 
 
 @bot.event
