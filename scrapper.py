@@ -53,7 +53,7 @@ class Bot:
     #return whole weeks of data
     #returns json data in python dict/list form
     #no error checking, assumes input is always valid    
-    @timeFunc
+    #@timeFunc
     def get_api(self, diningHall: str, breakfastLunchOrDinner: str):
         url = f"https://uga.api.nutrislice.com/menu/api/weeks/school/{diningHall}/menu-type/{breakfastLunchOrDinner}/{self.today.YEAR}/{self.today.MONTH}/{self.today.DAY}/"
         #print(url)
@@ -61,7 +61,7 @@ class Bot:
     
 
     #parses raw api data to only include catagories and a list of food that they contain
-    @timeFunc
+    #@timeFunc
     def parseMenuWholeWeek(self, data):
         days = {}
         for day in data["days"]: #day is a dictionary object
@@ -106,7 +106,7 @@ class Bot:
     #takes in the return data of parseMenu()
     #would be more algorithmicly efficient if integrate with parseMenu function but dont care rn. <--- current 2 methods actually better in case the api data changes in future. less code to change
     #4 nests for loops is very ugly BUT it works
-    @timeFunc
+    #@timeFunc
     def filterParsedMenu(self, data: dict):
         filteredDic = {}
         for key, value in data.items(): #key = date, value = {catagory : foodList}

@@ -36,7 +36,7 @@ async def on_ready():
             for key, value in data.items():
                 await channel.send("**" + str(key)  + "**" + "\n" + str(value) + "\n.", silent=True)
 
-    await bot.close()
+    await bot.close() #does print some unclosed connection warning but its a dont care situation for now
 
 
 @bot.event
