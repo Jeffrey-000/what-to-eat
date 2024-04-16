@@ -1,6 +1,6 @@
 from datetime import date
 import requests
-from time import sleep
+import time
 import json
 
 class Today:
@@ -10,36 +10,31 @@ class Today:
         self.MONTH = date.today().strftime("%m")
         self.DAY = date.today().strftime("%d")
 
+def timeFunc(function_ref):
+    def caller(*args, **kwargs):
+        begin = time.time()
+        ret_value =function_ref(*args, **kwargs)
+        end = time.time()
+        print(function_ref.__name__, "--- time elapsed : ", str(end - begin))
+        return ret_value
+    return caller
+
 
 #useful urls?
 #https://uga.api.nutrislice.com/menu/api/schools/
 
 #------------------------------------------^^^^ugli code--------------------------------------------------
-WHITE_LIST_CATAGORIES = ['Classic Cuisine', 
-                       'Fruit', 
-                       'Hickory & Oak Specials', 
-                       'Lemon Grass Kitchen Specials', 
-                       'Special Selections Specials', 
-                       "Chef's Choice", 
-                       'Deliciously Southern', 
-                       'Dessert Specials',
-                       'Snelling Selects',
-                       'The Bowl Specials',
-                       'Desserts At Baxter St. Bakery',
-                       "Headliners"]
-
-WHITE_LIST_FOODS = ['Blueberries',
-                    'Blackberries',
-                    ]
-
-
-DINNING_HALLS = {"BOLTON" : "dining-hall-1",
-                "OHOUSE" : "dining-hall-2",
-                "SNELLING" : "dining-hall-3",
-                "NICHE" : "dining-hall-4",
-                "JOEFRANK" : "dining-hall-5"}
-
-MEALTYPE = ["breakfast", "lunch", "dinner"]
+WHITE_LIST_CATAGORIES = [] #placeholder objects
+WHITE_LIST_FOODS = []
+DINNING_HALLS = {}
+MEALTYPE = []
+#populates globals from data.json
+with open('./data.json') as f:
+    temp = json.load(f)
+    WHITE_LIST_CATAGORIES = temp["WHITE_LIST_CATAGORIES"]
+    WHITE_LIST_FOODS = temp["WHITE_LIST_FOODS"]
+    DINNING_HALLS = temp["DINNING_HALLS"]
+    MEALTYPE = temp["MEALTYPE"]
 
 class Bot:
     def __init__(self):
@@ -58,6 +53,7 @@ class Bot:
     #return whole weeks of data
     #returns json data in python dict/list form
     #no error checking, assumes input is always valid    
+    @timeFunc
     def get_api(self, diningHall: str, breakfastLunchOrDinner: str):
         url = f"https://uga.api.nutrislice.com/menu/api/weeks/school/{diningHall}/menu-type/{breakfastLunchOrDinner}/{self.today.YEAR}/{self.today.MONTH}/{self.today.DAY}/"
         #print(url)
@@ -65,6 +61,7 @@ class Bot:
     
 
     #parses raw api data to only include catagories and a list of food that they contain
+    @timeFunc
     def parseMenuWholeWeek(self, data):
         days = {}
         for day in data["days"]: #day is a dictionary object
@@ -79,11 +76,6 @@ class Bot:
                     catagoryName = day["menu_info"][catagory_id]["section_options"]["display_name"]
                     #print(menuName)
                     for menu_item in day["menu_items"]: #menu_item is dictionary object
-                        #print(menu_item)
-                        #print('\n\n\n\n\n\n')
-                        #sleep(20)
-
-
                         #dictionary keys (catagory_id) are strings. to be evaluated all other values must be casted to string
                         #menu_id and caragory_id refer to the same data
                         #each food item is linked under a catagory_id
@@ -93,10 +85,28 @@ class Bot:
             days[day['date']] = catagoryDic
 
         return days
+        #return value
+        """
+        {
+        DATE1 : {
+                CATAGORY1 : [],
+                CATAGORY2 : [],
+                ...
+                },
+        DATE2 : {
+                CATAGORY1 : [],
+                CATAGORY2 : [],
+                ...
+                },
+        ...
+        }
+        
+        """
     
     #takes in the return data of parseMenu()
-    #would be more algorithmicly efficient if integrate with parseMenu function but dont care rn
+    #would be more algorithmicly efficient if integrate with parseMenu function but dont care rn. <--- current 2 methods actually better in case the api data changes in future. less code to change
     #4 nests for loops is very ugly BUT it works
+    @timeFunc
     def filterParsedMenu(self, data: dict):
         filteredDic = {}
         for key, value in data.items(): #key = date, value = {catagory : foodList}
@@ -105,9 +115,9 @@ class Bot:
                 if catagory in WHITE_LIST_CATAGORIES:
                     tempList = []
                     for foodItem in foodlist:
-                        for whiteItem in WHITE_LIST_FOODS:
-                            if whiteItem in foodItem:
-                                foodItem = '**' + foodItem + '**'
+                        for whiteItem in WHITE_LIST_FOODS: #using two for loops allows for partial string matching using 'in' keyword. i.e allows for 'catfish' to match both 'blackened catfish' and 'miso glaze catfish'
+                            if str(whiteItem).lower() in str(foodItem).lower():
+                                foodItem = '__***' + foodItem + '***__'  #discord bold underline and italics
                         tempList.append(foodItem)
                     tempValueDic[catagory] = tempList
 
@@ -115,7 +125,8 @@ class Bot:
 
         return filteredDic
     
-    #TODO: since intergrating with discord, make function to bold foods in WHITE_LIST_FOODS
+#TODO: list all the days in which whitelisted food will be on the menu
+
 
 
 

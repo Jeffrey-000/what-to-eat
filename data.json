@@ -1,0 +1,35 @@
+{
+    "WHITE_LIST_FOODS": [
+        "Blueberries",
+        "Blackberries",
+        "Chocolate Chip Cookie",
+        "catfish",
+        "Salmon"
+    ],
+    "WHITE_LIST_CATAGORIES": [
+        "Classic Cuisine",
+        "Fruit",
+        "Hickory & Oak Specials",
+        "Lemon Grass Kitchen Specials",
+        "Special Selections Specials",
+        "Chef's Choice",
+        "Deliciously Southern",
+        "Dessert Specials",
+        "Snelling Selects",
+        "The Bowl Specials",
+        "Desserts At Baxter St. Bakery",
+        "Headliners"
+    ],
+    "DINNING_HALLS": {
+        "BOLTON": "dining-hall-1",
+        "OHOUSE": "dining-hall-2",
+        "SNELLING": "dining-hall-3",
+        "NICHE": "dining-hall-4",
+        "JOEFRANK": "dining-hall-5"
+    },
+    "MEALTYPE": [
+        "breakfast",
+        "lunch",
+        "dinner"
+    ]
+}
