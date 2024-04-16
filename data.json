@@ -1,10 +1,19 @@
 {
     "WHITE_LIST_FOODS": [
-        "Blueberries",
-        "Blackberries",
-        "Chocolate Chip Cookie",
+        "blueberries",
+        "blackberries",
+        "chocolate chip cookie",
         "catfish",
-        "Salmon"
+        "Salmon",
+        "trout",
+        "steak",
+        "peach pudding cake",
+        "white chocolate & macadamia nut cookies",
+        "swedish meatballs",
+        "chinese broccoli and almond stirfry",
+        "pajeon",
+        "crawfish",
+        
     ],
     "WHITE_LIST_CATAGORIES": [
         "Classic Cuisine",
