@@ -2,6 +2,7 @@ from datetime import date
 import requests
 import time
 import json
+from pathlib import Path
 
 class Today:
     def __init__(self):
@@ -29,7 +30,9 @@ WHITE_LIST_FOODS = []
 DINNING_HALLS = {}
 MEALTYPE = []
 #populates globals from data.json
-with open('./data.json') as f:
+path = Path(__file__).parent / 'data.json' #absolute path to current directory
+#allows this file to be executed from directory other than this one, assumeing / here is operator overloading
+with open(path) as f:
     temp = json.load(f)
     WHITE_LIST_CATAGORIES = temp["WHITE_LIST_CATAGORIES"]
     WHITE_LIST_FOODS = temp["WHITE_LIST_FOODS"]
