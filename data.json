@@ -14,7 +14,8 @@
         "pajeon",
         "crawfish",
         "southern fried chicken",
-        "Italian Spaghetti"        
+        "Italian Spaghetti",
+        "Broccolini"      
     ],
     "WHITE_LIST_CATAGORIES": [
         "Classic Cuisine",
@@ -28,7 +29,8 @@
         "Snelling Selects",
         "The Bowl Specials",
         "Desserts At Baxter St. Bakery",
-        "Headliners"
+        "Headliners",
+        "The Wok Specials"
     ],
     "DINNING_HALLS": {
         "BOLTON": "dining-hall-1",

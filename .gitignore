@@ -1,7 +1,8 @@
-.env
+.env*
 Lib/
 Scripts/
 pyvenv.cfg
 Include/
 .vscode/
 __pycache__
+venv
