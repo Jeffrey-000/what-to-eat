@@ -15,13 +15,13 @@
         "crawfish",
         "southern fried chicken",
         "Italian Spaghetti",
-        "Broccolini"      
+        "Broccolini",
+        "flounder"
     ],
     "WHITE_LIST_CATAGORIES": [
         "Classic Cuisine",
         "Fruit",
-        "Hickory & Oak Specials",
-        "Lemon Grass Kitchen Specials",
+        "Buon Appetito Specials", 
         "Special Selections Specials",
         "Chef's Choice",
         "Deliciously Southern",
@@ -30,7 +30,9 @@
         "The Bowl Specials",
         "Desserts At Baxter St. Bakery",
         "Headliners",
-        "The Wok Specials"
+        "The Wok Specials",
+        "Dessert Specials",
+        "Smoothies @ Uga"
     ],
     "DINNING_HALLS": {
         "BOLTON": "dining-hall-1",
